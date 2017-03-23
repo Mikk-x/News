@@ -34,4 +34,56 @@ public class NetworkState {
         return false;
     }
 
+    /**
+     * 检查WiFi是否连接
+     * @param context
+     * @return
+     */
+    public static boolean wifiConnected(Context context){
+
+        // 如果上下文不等于null
+        if (context != null) {
+            // 连接管理器？          从系统服务中得到连接服务
+            ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            // 得到网络信息
+            NetworkInfo info = manager.getActiveNetworkInfo();
+            // 如果网络信息不为空
+            if (info != null) {
+                // 如果网络信息类型是WiFi
+                if (info.getType() == ConnectivityManager.TYPE_WIFI) {
+                    // 网络是可用的
+                    return info.isAvailable();
+                }
+            }
+        }
+        // 如果上下文为空，返回false
+        return false;
+    }
+
+    /**
+     * 检查移动网络是否连接
+     * @param context
+     * @return
+     */
+    public static boolean mobileDataConnected(Context context){
+
+        // 如果上下文不等于null
+        if (context != null) {
+            // 连接管理器？          从系统服务中得到连接服务
+            ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            // 得到网络信息
+            NetworkInfo info = manager.getActiveNetworkInfo();
+            // 如果网络信息不为空
+            if (info != null) {
+                // 如果网络信息类型是WiFi
+                if (info.getType() == ConnectivityManager.TYPE_MOBILE) {
+                    // 网络是可用的
+                    return info.isAvailable();
+                }
+            }
+        }
+        // 如果上下文为空，返回false
+        return false;
+    }
+
 }

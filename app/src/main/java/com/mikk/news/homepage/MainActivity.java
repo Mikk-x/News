@@ -11,7 +11,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.mikk.news.R;
@@ -27,9 +26,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawer;
     // 抽屉导航布局
     private NavigationView navigationView;
-
-    private FrameLayout mLayoutFragment;
-
     // 首页Fragment
     private MainFragment mMainFragment;
     // 收藏页Fragment
@@ -42,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         initView();
+        // 恢复fragment的状态
         // 如果绑定实例不为空
         if (savedInstanceState != null) {
             // 得到实例的状态？  // TODO: 什么意思
@@ -58,6 +55,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.layout_fragment,mMainFragment,"MainFragment").commit();
         }
+
+//        new BookmarksFragment(MainActivity.this,mBookmarksFragment);
+
+//        new bookmarks
 
         if (!mBookmarksFragment.isAdded()){
             getSupportFragmentManager().beginTransaction()
@@ -87,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 显示首页面，隐藏收藏页面
      */
     private void showMainFragment() {
+        // 开始事务
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         // 显示
         fragmentTransaction.show(mMainFragment);
@@ -103,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 显示收藏页面，隐藏首页面
      */
     private void showBookmarksFragment() {
+        // 开始事务
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         // 显示
         fragmentTransaction.show(mBookmarksFragment);
@@ -161,12 +164,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             // 首页
             case R.id.nav_home:
-                Toast.makeText(this, "首页", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "首页", Toast.LENGTH_SHORT).show();
                 showMainFragment();
                 break;
             // 收藏页
             case R.id.nav_bookmarks:
-                Toast.makeText(this, "收藏页", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "收藏页", Toast.LENGTH_SHORT).show();
                 showBookmarksFragment();
                 break;
             // 切换主题
@@ -183,5 +186,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
         return true;
+    }
+
+    /**
+     * 储存Fragment的状态
+     * @param outState
+     */
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (mMainFragment.isAdded()) {
+            getSupportFragmentManager().putFragment(outState,"MainFragment",mMainFragment);
+        }
+        if (mBookmarksFragment.isAdded()) {
+            getSupportFragmentManager().putFragment(outState,"BookmarksFragment",mBookmarksFragment);
+        }
     }
 }
